@@ -29,7 +29,7 @@ public class LoginController {
         if (isAuthenticated) {
             //jwtTokenUtil.generateToken(userDetails);
             log.info("User successfully authenticated");
-            String token = jwtUtil.generateToken(user, "maker");
+            String token = jwtUtil.generateToken(user, user.getName()); // considering names are maker, checker & admin
             log.info("Token - " + token);
             return ResponseEntity.accepted().body(token);
         } else {
