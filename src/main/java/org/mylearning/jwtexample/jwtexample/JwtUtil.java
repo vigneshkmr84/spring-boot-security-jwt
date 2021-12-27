@@ -4,10 +4,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,12 +27,16 @@ public class JwtUtil implements Serializable {
     // JWT signing secret key
     private static final String SECRET = "password";
 
+    //private static final PrivateKey privateKey = "";
+    @Autowired
+    ApplicationContext applicationContext;
     //retrieve username from jwt token
     @Value("${application.environment}")
     private String environment;
 
     /**
      * Get UserName from Token
+     *
      * @param token - KWT
      * @return Username
      */
@@ -38,6 +46,7 @@ public class JwtUtil implements Serializable {
 
     /**
      * Get Expiry Date from Token
+     *
      * @param token - JWT
      * @return - Expiry Date
      */
@@ -53,6 +62,7 @@ public class JwtUtil implements Serializable {
 
     /**
      * Get "role" parameter from Claims of the Token
+     *
      * @param token - JWT
      * @return role
      */
@@ -62,16 +72,26 @@ public class JwtUtil implements Serializable {
 
     /**
      * Get The Claims mapping from the token
+     *
      * @param token - JWT
      * @return - Claims mapping
      */
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+        try {
+            // use this for Static Secret
+            //return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+            return Jwts.parser().setSigningKey((PublicKey) applicationContext.getBean("readPublicKey")).parseClaimsJws(token).getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**
      * Check if the token is exprired
-      * @param token - JWT
+     *
+     * @param token - JWT
      * @return true / false
      */
     private Boolean isTokenExpired(String token) {
@@ -93,12 +113,24 @@ public class JwtUtil implements Serializable {
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_DURATION_VALIDITY * 1000))
-                .signWith(SignatureAlgorithm.HS512, SECRET).compact();
+        try {
+
+            return Jwts.builder()
+                    .setClaims(claims)
+                    .setSubject(subject)
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + TOKEN_DURATION_VALIDITY * 1000))
+
+                    // use this for Static Secret
+                    //.signWith(SignatureAlgorithm.HS512, SECRET)
+                    .signWith(SignatureAlgorithm.RS256, (RSAPrivateKey) applicationContext.getBean("readPrivateKey"))
+                    .compact();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     //validate token
@@ -111,8 +143,4 @@ public class JwtUtil implements Serializable {
     public String getToken(String headers) {
         return headers.substring(7);
     }
-
-    /*public String getToken(HttpHeaders headers){
-        return getToken(headers.get("Authorization"));
-    }*/
 }

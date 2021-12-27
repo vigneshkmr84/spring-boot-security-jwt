@@ -25,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Configuring CORS filter
+     *
      * @return - Cors filter Configurations
      */
     @Bean
