@@ -1,7 +1,7 @@
 # JWT example with Spring-Boot
 
-
 ### Creating a Valid Signer Certificate
+
 ``` shell
 openssl req -newkey rsa:4096 \
             -x509 \
@@ -12,7 +12,7 @@ openssl req -newkey rsa:4096 \
             -keyout private.key
 ```
 
-Also - enter the details like Country, State, Organization, email-id (just to have a subject for the Certificate" 
+Also - enter the details like Country, State, Organization, email-id (just to have a subject for the Certificate"
 
 ### Validating the Certificate
 
