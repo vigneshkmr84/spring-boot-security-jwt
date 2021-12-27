@@ -1,4 +1,4 @@
-package org.mylearning.jwtexample.jwtexample;
+package org.mylearning.jwtexample;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

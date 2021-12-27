@@ -1,4 +1,4 @@
-package org.mylearning.jwtexample.jwtexample;
+package org.mylearning.jwtexample;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -30,7 +30,8 @@ public class JwtUtil implements Serializable {
     //private static final PrivateKey privateKey = "";
     @Autowired
     ApplicationContext applicationContext;
-    //retrieve username from jwt token
+
+    // get environment from properties file
     @Value("${application.environment}")
     private String environment;
 
@@ -89,7 +90,7 @@ public class JwtUtil implements Serializable {
     }
 
     /**
-     * Check if the token is exprired
+     * Check if the token is expired
      *
      * @param token - JWT
      * @return true / false
@@ -120,7 +121,6 @@ public class JwtUtil implements Serializable {
                     .setSubject(subject)
                     .setIssuedAt(new Date(System.currentTimeMillis()))
                     .setExpiration(new Date(System.currentTimeMillis() + TOKEN_DURATION_VALIDITY * 1000))
-
                     // use this for Static Secret
                     //.signWith(SignatureAlgorithm.HS512, SECRET)
                     .signWith(SignatureAlgorithm.RS256, (RSAPrivateKey) applicationContext.getBean("readPrivateKey"))

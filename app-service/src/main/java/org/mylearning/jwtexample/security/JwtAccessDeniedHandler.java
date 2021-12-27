@@ -1,4 +1,4 @@
-package org.mylearning.jwtexample.jwtexample.security;
+package org.mylearning.jwtexample.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;

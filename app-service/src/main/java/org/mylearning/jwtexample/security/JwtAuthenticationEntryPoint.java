@@ -1,4 +1,4 @@
-package org.mylearning.jwtexample.jwtexample.security;
+package org.mylearning.jwtexample.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

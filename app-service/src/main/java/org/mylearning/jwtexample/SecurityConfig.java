@@ -1,6 +1,6 @@
-package org.mylearning.jwtexample.jwtexample;
+package org.mylearning.jwtexample;
 
-import org.mylearning.jwtexample.jwtexample.security.RequestFilter;
+import org.mylearning.jwtexample.security.RequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,41 +41,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CorsFilter(source);
     }
 
+    /**
+     * Configuring http security object (A Filter) to allow / deny API Calls with or without authorization
+     *
+     * @param http - HttpSecurity module
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        // Set permissions on endpoints
-        /*http.authorizeRequests()
-                // Our public endpoints
-                .antMatchers("/api/public/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/author/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/author/search").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/book/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/book/search").permitAll()
-                // Our private endpoints
-                .anyRequest().authenticated();*/
 
         // /health & /login APIs are open for all, but other api's need to be authenticated properly
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/health", "/login").permitAll()
-
-
-                // newly added
                 .antMatchers("/protected/**").authenticated()
                 // configuring the spring security for our custom needs
                 // Specifically configure the security to be stateless
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        //        .anyRequest().authenticated();
-
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
     }
 
-
-    /*@Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception{
-        return super.authenticationManagerBean();
-    }*/
 }

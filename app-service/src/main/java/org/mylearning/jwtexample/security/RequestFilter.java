@@ -1,8 +1,8 @@
-package org.mylearning.jwtexample.jwtexample.security;
+package org.mylearning.jwtexample.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.mylearning.jwtexample.jwtexample.JwtUtil;
-import org.mylearning.jwtexample.jwtexample.User;
+import org.mylearning.jwtexample.JwtUtil;
+import org.mylearning.jwtexample.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
