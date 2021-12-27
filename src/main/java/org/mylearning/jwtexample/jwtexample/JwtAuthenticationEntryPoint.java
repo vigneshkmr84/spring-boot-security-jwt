@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
 
+/*
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
 
     private static final long serialVersionUID = -7858869558953243875L;
@@ -18,4 +19,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
     }
-}
+}*/
