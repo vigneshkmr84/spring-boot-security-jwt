@@ -14,13 +14,14 @@ public class AuthorizationManager {
     /**
      * Custom function to check if the role with token
      * matches with the provided role
+     *
      * @param bearer - Bearer Token
-     * @param role - Provided role
+     * @param role   - Provided role
      * @return - true / false
      */
     public boolean isRoleMatching(String bearer, String role) {
 
-        if ( bearer == null ) return false;
+        if (bearer == null) return false;
         String token = jwtUtil.getToken(bearer);
         String roleFromToken = jwtUtil.getRoleFromToken(token);
 
