@@ -26,14 +26,13 @@ public class LoginController {
 
         boolean isAuthenticated = authenticationManager.authenticate(user);
 
-        if ( isAuthenticated ){
+        if (isAuthenticated) {
             //jwtTokenUtil.generateToken(userDetails);
             log.info("User successfully authenticated");
             String token = jwtUtil.generateToken(user, "maker");
             log.info("Token - " + token);
             return ResponseEntity.accepted().body(token);
-        }
-        else{
+        } else {
             log.error("Invalid User Credentials");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid User Credentials");
         }

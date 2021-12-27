@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,7 +19,7 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-public class Filter extends OncePerRequestFilter {
+public class RequestFilter extends OncePerRequestFilter {
 
     @Autowired
     JwtUtil jwtUtil;
@@ -36,15 +34,15 @@ public class Filter extends OncePerRequestFilter {
         String token = "";
 
 
-        if ( headerString != null && !headerString.isEmpty() && headerString.startsWith("Bearer")){
+        if (headerString != null && !headerString.isEmpty() && headerString.startsWith("Bearer")) {
             log.info("Complete Authorization Header String : " + headerString);
             token = headerString.substring(7); // Bearer and space = 7 characters
             log.info("Token : " + token);
             String userName = jwtUtil.getUsernameFromToken(token);
 
-            if ( userName !=null ){
+            if (userName != null) {
 
-                if ( jwtUtil.validateToken(token, new User(userName)) ){
+                if (jwtUtil.validateToken(token, new User(userName))) {
 
                     UserDetails userDetails = this.customUseDetailsService.loadUserByUsername(userName);
                     log.info("JWT token is valid");
@@ -56,7 +54,7 @@ public class Filter extends OncePerRequestFilter {
                             .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                }else{
+                } else {
                     log.error("Invalid JWT");
                     try {
                         throw new Exception("Invalid Token");

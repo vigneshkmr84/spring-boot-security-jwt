@@ -1,13 +1,10 @@
 package org.mylearning.jwtexample.jwtexample;
 
-import org.mylearning.jwtexample.jwtexample.security.Filter;
+import org.mylearning.jwtexample.jwtexample.security.RequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -19,7 +16,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    Filter filter;
+    RequestFilter filter;
 
     @Bean
     public CorsFilter corsFilter() {
@@ -56,8 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // newly added
                 .antMatchers("/protected/**").authenticated()
                 // configuring the spring security for our custom needs
+                // Specifically configure the security to be stateless
                 .and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // making Stateless of Spring Security
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         //        .anyRequest().authenticated();
 

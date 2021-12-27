@@ -1,14 +1,10 @@
 package org.mylearning.jwtexample.jwtexample;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,23 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import org.springframework.stereotype.Service;
-//import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 @Slf4j
 public class JwtUtil implements Serializable {
 
-    private static final long serialVersionUID = -2550185165626007488L;
-
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60; // 5 hours
-
+    private static final long serialVersionUID = -2550185165626007488L;
     // JWT signing secret key
     private String secret = "password";
 
@@ -50,6 +36,7 @@ public class JwtUtil implements Serializable {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
+
     //for retrieving any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();

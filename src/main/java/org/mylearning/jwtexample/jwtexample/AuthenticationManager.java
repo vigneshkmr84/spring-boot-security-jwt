@@ -16,7 +16,7 @@ public class AuthenticationManager {
         put("checker", "checker");
     }};
 
-    public boolean authenticate(User user){
+    public boolean authenticate(User user) {
         // Write your custom code to connect to SSO / Database / Other standard Credentials' manager to validate the user name and password
 
         // For this project, I've just used a simple map to see if the username and credentials are matching
