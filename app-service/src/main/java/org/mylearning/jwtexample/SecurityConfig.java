@@ -23,6 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     RequestFilter filter;
 
+    @Autowired
+    JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
     /**
      * Configuring CORS filter
      *
@@ -56,8 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/protected/**").authenticated()
                 // configuring the spring security for our custom needs
                 // Specifically configure the security to be stateless
-                .and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
     }

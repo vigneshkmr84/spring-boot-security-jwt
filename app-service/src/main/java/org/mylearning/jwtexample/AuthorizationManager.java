@@ -26,7 +26,11 @@ public class AuthorizationManager {
         String roleFromToken = jwtUtil.getRoleFromToken(token);
 
         log.info("Role From Token : " + roleFromToken);
-        return roleFromToken.equals(role);
+        boolean status = roleFromToken.equals(role);
+        if ( !status ) {
+            log.info("Unauthorized Access");
+        }
+        return status;
     }
 
     /*public boolean hasRole(String role){
