@@ -38,7 +38,7 @@ public class RequestFilter extends OncePerRequestFilter {
             log.info("Complete Authorization Header String : " + headerString);
             token = headerString.substring(7); // Bearer and space = 7 characters
             log.info("Token : " + token);
-            String userName = jwtUtil.getUsernameFromToken(token);
+            String userName = jwtUtil.getUserNameFromToken(token);
 
             if (userName != null) {
 
